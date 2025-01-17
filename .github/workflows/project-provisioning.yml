@@ -65,7 +65,6 @@ jobs:
       - name: Terraform Apply for BTP
         shell: bash
         run: |
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace new ${{ env.STAGE }}
             export ARM_ACCESS_KEY=${{ secrets.ARM_ACCESS_KEY }}
             export BTP_USERNAME=${{ secrets.BTP_USERNAME }}
             export BTP_PASSWORD=${{ secrets.BTP_PASSWORD }}
@@ -74,6 +73,7 @@ jobs:
             export TF_VAR_subaccount_region=${{ steps.output_issue_data.outputs.subaccount-region }}
             export TF_VAR_subaccount_stage=DEV
             export TF_VAR_project_costcenter=${{ steps.output_issue_data.outputs.cost-center }}
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace new ${{ env.STAGE }}
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} apply -auto-approve -no-color
 
       - name: Transfer BTP output values
@@ -99,7 +99,6 @@ jobs:
       - name: Terraform Apply for CF
         shell: bash
         run: |
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace new ${{ env.STAGE }}
             export ARM_ACCESS_KEY=${{ secrets.ARM_ACCESS_KEY }}
             export CF_USER=${{ secrets.BTP_USERNAME }}
             export CF_PASSWORD=${{ secrets.BTP_PASSWORD }}
@@ -110,14 +109,15 @@ jobs:
             export TF_VAR_subaccount_url=${{ steps.terraform_output_btp.outputs.subaccount_url }}
             export TF_VAR_cf_space_manager=${{ steps.output_issue_data.outputs.space-responsible }}
             export TF_VAR_cf_space_developer=${{ steps.output_issue_data.outputs.space-responsible }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select ${{ env.STAGE}} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} apply -auto-approve -no-color
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace new ${{ env.STAGE }}
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} apply -auto-approve -no-color
 
       - name: Transfer Cloud Foundry output values
         id: terraform_output_cf
         shell: bash
         run: |
             export ARM_ACCESS_KEY=${{ secrets.ARM_ACCESS_KEY }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select ${{ env.STAGE}} &&  terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} output -json > output_cf.json
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select ${{ env.STAGE }} &&  terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} output -json > output_cf.json
             echo "cf_space_url=$(jq -r '.cf_space_url.value' output_cf.json)" >> $GITHUB_OUTPUT
 
       - name: Add comment to issue
