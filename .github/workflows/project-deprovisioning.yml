@@ -61,8 +61,7 @@ jobs:
         shell: bash
         run: |
           export ARM_ACCESS_KEY=${{ secrets.ARM_ACCESS_KEY }}
-          terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace new ${{ env.STAGE }}
-          terraform workspace select ${{ env.STAGE}} &&  terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} output -json > output_btp.json
+          terraform workspace select ${{ env.STAGE }} &&  terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} output -json > output_btp.json
           echo "cf_api_url=$(jq -r '.cf_api_url.value' output_btp.json)" >> $GITHUB_OUTPUT
           echo "cf_org_id=$(jq -r '.cf_org_id.value' output_btp.json)" >> $GITHUB_OUTPUT
           echo "subaccount_url=$(jq -r '.subaccount_url.value' output_btp.json)" >> $GITHUB_OUTPUT
@@ -90,8 +89,7 @@ jobs:
             export TF_VAR_cf_org_id=${{ steps.terraform_output_btp.outputs.cf_org_id }}
             export TF_VAR_cf_api_url=${{ steps.terraform_output_btp.outputs.cf_api_url }}
             export TF_VAR_subaccount_url=${{ steps.terraform_output_btp.outputs.subaccount_url }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace new ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select ${{ env.STAGE}} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} destroy -auto-approve -no-color
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} destroy -auto-approve -no-color
 
       - name: Init Terraform for BTP
         shell: bash
@@ -115,8 +113,7 @@ jobs:
             export TF_VAR_subaccount_stage=DEV
             export TF_VAR_beta_enabled=true
             export TF_VAR_project_costcenter=${{ github.event.inputs.cost-center }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace new ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select ${{ env.STAGE}} &&  terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} destroy -auto-approve -no-color
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select ${{ env.STAGE }} &&  terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} destroy -auto-approve -no-color
 
 ###
 # TESTING
