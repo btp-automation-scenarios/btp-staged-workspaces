@@ -121,7 +121,7 @@ jobs:
             export ARM_ACCESS_KEY=${{ secrets.ARM_ACCESS_KEY }}
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select default
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace delete ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_cf }} workspace select default
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select default
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace delete ${{ env.STAGE }}
 
 ###
@@ -222,7 +222,7 @@ jobs:
             export ARM_ACCESS_KEY=${{ secrets.ARM_ACCESS_KEY }}
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select default
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace delete ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_cf }} workspace select default
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select default
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace delete ${{ env.STAGE }}
 
 ####
@@ -323,5 +323,5 @@ jobs:
             export ARM_ACCESS_KEY=${{ secrets.ARM_ACCESS_KEY }}
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select default
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace delete ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_cf }} workspace select default
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select default
             terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace delete ${{ env.STAGE }}
