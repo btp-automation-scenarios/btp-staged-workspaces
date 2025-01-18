@@ -73,8 +73,7 @@ jobs:
             export TF_VAR_subaccount_region=${{ steps.output_issue_data.outputs.subaccount-region }}
             export TF_VAR_subaccount_stage=DEV
             export TF_VAR_project_costcenter=${{ steps.output_issue_data.outputs.cost-center }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace new ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} apply -auto-approve -no-color
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select -or-create=true ${{ env.STAGE }}  && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} apply -auto-approve -no-color
 
       - name: Transfer BTP output values
         id: terraform_output_btp
@@ -109,8 +108,7 @@ jobs:
             export TF_VAR_subaccount_url=${{ steps.terraform_output_btp.outputs.subaccount_url }}
             export TF_VAR_cf_space_manager=${{ steps.output_issue_data.outputs.space-responsible }}
             export TF_VAR_cf_space_developer=${{ steps.output_issue_data.outputs.space-responsible }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace new ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} apply -auto-approve -no-color
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select -or-create=true ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} apply -auto-approve -no-color
 
       - name: Transfer Cloud Foundry output values
         id: terraform_output_cf
@@ -197,15 +195,14 @@ jobs:
             export TF_VAR_subaccount_region=${{ steps.output_issue_data.outputs.subaccount-region }}
             export TF_VAR_subaccount_stage=TEST
             export TF_VAR_project_costcenter=${{ steps.output_issue_data.outputs.cost-center }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace new ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} apply -auto-approve -no-color
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select -or-create=true ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} apply -auto-approve -no-color
 
       - name: Transfer BTP output values
         id: terraform_output_btp
         shell: bash
         run: |
           export ARM_ACCESS_KEY=${{ secrets.ARM_ACCESS_KEY }}
-          terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select ${{ env.STAG }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} output -json > output_btp.json
+          terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} output -json > output_btp.json
           echo "cf_api_url=$(jq -r '.cf_api_url.value' output_btp.json)" >> $GITHUB_OUTPUT
           echo "cf_org_id=$(jq -r '.cf_org_id.value' output_btp.json)" >> $GITHUB_OUTPUT
           echo "subaccount_url=$(jq -r '.subaccount_url.value' output_btp.json)" >> $GITHUB_OUTPUT
@@ -233,8 +230,7 @@ jobs:
             export TF_VAR_subaccount_url=${{ steps.terraform_output_btp.outputs.subaccount_url }}
             export TF_VAR_cf_space_manager=${{ steps.output_issue_data.outputs.space-responsible }}
             export TF_VAR_cf_space_developer=${{ steps.output_issue_data.outputs.space-responsible }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace new ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} apply -auto-approve -no-color
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select -or-create=true ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} apply -auto-approve -no-color
 
       - name: Transfer Cloud Foundry output values
         id: terraform_output_cf
@@ -322,8 +318,7 @@ jobs:
             export TF_VAR_subaccount_region=${{ steps.output_issue_data.outputs.subaccount-region }}
             export TF_VAR_subaccount_stage=PROD
             export TF_VAR_project_costcenter=${{ steps.output_issue_data.outputs.cost-center }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace new ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} apply -auto-approve -no-color
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} workspace select -or-create=true ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_BTP }} apply -auto-approve -no-color
 
       - name: Transfer BTP output values
         id: terraform_output_btp
@@ -357,8 +352,7 @@ jobs:
             export TF_VAR_cf_api_url=${{ steps.terraform_output_btp.outputs.cf_api_url }}
             export TF_VAR_subaccount_url=${{ steps.terraform_output_btp.outputs.subaccount_url }}
             export TF_VAR_cf_space_supporter=${{ steps.output_issue_data.outputs.space-responsible }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace new ${{ env.STAGE }}
-            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} apply -auto-approve -no-color
+            terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} workspace select -or-create=true ${{ env.STAGE }} && terraform -chdir=${{ env.PATH_TO_TFSCRIPT_CF }} apply -auto-approve -no-color
 
       - name: Transfer Cloud Foundry output values
         id: terraform_output_cf
