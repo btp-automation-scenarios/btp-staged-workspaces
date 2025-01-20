@@ -12,14 +12,15 @@ env:
   PATH_TO_TFSCRIPT_CF: 'infra/CloudFoundry'
 
 jobs:
+
+###
+# DEVELOPMENT
+###
   create_subaccount_dev:
     concurrency:
      group: dev
      cancel-in-progress: true
 
-###
-# DEVELOPMENT
-###
     name: Create DEV Subaccount for Project
     if: ${{ !github.event.issue.pull_request }} && contains(github.event.issue.body, 'Project Name')
     runs-on: ubuntu-latest
