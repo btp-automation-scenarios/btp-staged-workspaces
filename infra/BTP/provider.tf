@@ -7,7 +7,8 @@ terraform {
     }
   }
   backend "azurerm" {
-    key = "btpworkspace.terraform.state"
+    key      = "btpworkspace.terraform.state"
+    use_oidc = true
   }
 }
 

@@ -6,7 +6,8 @@ terraform {
     }
   }
   backend "azurerm" {
-    key = "cfworkspace.terraform.state"
+    key      = "cfworkspace.terraform.state"
+    use_oidc = true
   }
 }
 
